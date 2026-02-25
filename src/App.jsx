@@ -102,7 +102,7 @@ function App() {
                   <div className="absolute inset-0 bg-blue-600/10 blur-[120px] rounded-full animate-pulse"></div>
                   <div className="relative group w-full max-w-[380px] aspect-[4/5] bg-slate-900 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl transition-all duration-500 hover:border-blue-500/50">
                     <img 
-                      src="/src/heri.jpg" 
+                      src="/public/heri.jpg" 
                       alt="Heri Ilham A" 
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
                       onError={(e) => { e.target.src = "/src/heri.jpg"; }}
