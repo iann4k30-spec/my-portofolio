@@ -105,7 +105,7 @@ function App() {
                       src="/heri.jpg" 
                       alt="Heri Ilham A" 
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                      onError={(e) => { e.target.src = "/src/heri.jpg"; }}
+                      onError={(e) => { e.target.src = "/heri.jpg"; }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent text-left p-10 flex flex-col justify-end">
                         <p className="font-mono text-[10px] text-blue-400 font-bold uppercase tracking-[0.4em] mb-1">Authenticated Modder</p>
