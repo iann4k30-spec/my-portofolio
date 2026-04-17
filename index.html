@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heri Ilham A. |</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700&family=Prata&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg: #ffffff; --fg: #000000; --accent: rgba(0,0,0,0.05); }
+        .dark-mode { --bg: #000000; --fg: #ffffff; --accent: rgba(255,255,255,0.05); }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s ease;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .font-serif { font-family: 'Prata', serif; }
+
+        /* Pill Navigation Bar */
+        .nav-pill-container {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            background: rgba(var(--bg-rgb), 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            padding: 6px 20px;
+            border-radius: 50px;
+            opacity: 0;
+        }
+
+        /* Music Player UI */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 9999;
+            background: var(--fg);
+            color: var(--bg);
+            padding: 12px 20px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .album-art {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .playing .album-art { animation-play-state: running; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Transition Overlay */
+        #mode-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--fg);
+            clip-path: circle(0% at 90% 90%);
+            z-index: 9998;
+            pointer-events: none;
+        }
+
+        .reveal { opacity: 0; transform: translateY(40px); }
+        .profile-img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(1);
+            border: 1px solid var(--fg);
+            padding: 10px;
+        }
+
+        .theme-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--fg);
+            color: var(--bg);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <div id="mode-overlay"></div>
+
+    <div class="music-player" id="music-container">
+        <img src="The 1975 Album Cover.jpg" alt="Cover" class="album-art" id="track-art">
+        <div class="flex flex-col">
+            <span class="text-[10px] font-bold tracking-wider leading-none uppercase" id="track-name">Loading...</span>
+            <span class="text-[8px] opacity-70 tracking-tighter" id="track-artist">System Audio</span>
+        </div>
+        <button onclick="togglePlay()" class="ml-2 hover:scale-110 transition active:scale-90">
+            <svg id="play-icon" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            </svg>
+        </button>
+        <audio id="main-audio" src="The 1975   About You.flac"></audio>
+    </div>
+
+    <div class="nav-pill-container" id="pill-nav">
+        <div class="font-serif italic text-sm mr-6 hidden md:block">H.I.A</div>
+        <div class="flex space-x-2">
+            <a onclick="gsap.to(window, {duration: 1.5, scrollTo: '#home', ease: 'power4.inOut'})" class="nav-link text-[10px] px-4 cursor-pointer hover:opacity-50">Home</a>
+            <a onclick="gsap.to(window, {duration: 1.5, scrollTo: '#about', ease: 'power4.inOut'})" class="nav-link text-[10px] px-4 cursor-pointer hover:opacity-50">System</a>
+            <a onclick="gsap.to(window, {duration: 1.5, scrollTo: '#contact', ease: 'power4.inOut'})" class="nav-link text-[10px] px-4 cursor-pointer hover:opacity-50">Connect</a>
+        </div>
+    </div>
+
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">MODE</button>
+
+    <section id="home" class="h-screen flex flex-col justify-center items-center text-center px-6">
+        <div class="reveal mb-10">
+            <img src="pfp.jpg" alt="Profile" class="profile-img">
+        </div>
+        <h1 class="reveal font-serif text-7xl md:text-[11rem] mb-2 tracking-tighter">Heri.</h1>
+        <p class="reveal text-[10px] tracking-[0.8em] uppercase opacity-50">Software Modder // System Optimiser</p>
+    </section>
+
+    <section id="about" class="min-h-screen py-40 px-10 md:px-40 flex flex-col justify-center">
+        <div class="max-w-4xl">
+            <h2 class="reveal font-serif text-5xl md:text-7xl mb-12 italic">System Logic.</h2>
+            <p class="reveal text-lg md:text-2xl leading-relaxed font-light opacity-80 mb-16">
+                Mengeksplorasi batas efisiensi perangkat lunak melalui optimasi <span class="italic underline">Kernel</span> dan modifikasi kernel. Saya percaya bahwa sistem yang terbuka adalah kunci kreativitas tanpa batas.
+            </p>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="reveal border-l-2 border-current pl-8">
+                    <span class="text-[9px] uppercase tracking-widest opacity-40">Modifikasi</span>
+                    <p class="mt-4 font-serif text-2xl italic">Kernel Tuning & ROMs</p>
+                </div>
+                <div class="reveal border-l-2 border-current pl-8">
+                    <span class="text-[9px] uppercase tracking-widest opacity-40">OS</span>
+                    <p class="mt-4 font-serif text-2xl italic">Arch Linux & Windows 11</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="py-40 text-center">
+        <div class="reveal">
+            <h2 class="font-serif text-4xl md:text-6xl italic mb-12">iann4k30@gmail.com</h2>
+            <div class="flex justify-center space-x-12 text-[10px] tracking-widest uppercase opacity-40">
+                <a href="https://github.com/iann4k30-spec">Github</a>
+                <a href="https://www.instagram.com/aap1nnn?igsh=MXhuMnB0bGFnOHRxYw==">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Music Player Logic
+        const musicContainer = document.getElementById('music-container');
+        const audio = document.getElementById('main-audio');
+        const playIcon = document.getElementById('play-icon');
+        const trackName = document.getElementById('track-name');
+        const trackArtist = document.getElementById('track-artist');
+
+        // EDIT DATA LAGU DI SINI
+        const songData = {
+            title: "About You",
+            artist: "The 1975",
+            cover: "The 1975 Album Cover.jpg", // Ganti URL Foto
+            file: "The 1975   About You.flac" // Ganti URL MP3
+        };
+
+        // Initialize Song
+        trackName.innerText = songData.title;
+        trackArtist.innerText = songData.artist;
+        document.getElementById('track-art').src = songData.cover;
+        audio.src = songData.file;
+
+        let isPlaying = false;
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                musicContainer.classList.remove('playing');
+                playIcon.innerHTML = '<path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>';
+            } else {
+                audio.play();
+                musicContainer.classList.add('playing');
+                playIcon.innerHTML = '<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Entrance Animation
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("#pill-nav", { duration: 1, opacity: 1, y: 0, ease: "power3.out" })
+              .to("#music-container", { duration: 1, opacity: 1, y: 0, ease: "power3.out" }, "-=0.5")
+              .to(".reveal", { duration: 1.2, opacity: 1, y: 0, stagger: 0.15, ease: "power4.out" }, "-=0.8");
+        });
+
+        // Theme Toggle
+        let isDark = true;
+        function toggleTheme() {
+            const overlay = document.getElementById('mode-overlay');
+            gsap.to(overlay, {
+                duration: 1,
+                clipPath: "circle(150% at 90% 90%)",
+                ease: "expo.inOut",
+                onComplete: () => {
+                    isDark = !isDark;
+                    document.body.classList.toggle('dark-mode');
+                    document.getElementById('theme-btn').innerText = isDark ? "LIGHT" : "DARK";
+                    gsap.to(overlay, { duration: 1, clipPath: "circle(0% at 90% 90%)", ease: "expo.inOut", delay: 0.1 });
+                }
+            });
+        }
+
+        // Scroll Reveal
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.to(section.querySelectorAll('.reveal'), {
+                scrollTrigger: { trigger: section, start: "top 80%" },
+                opacity: 1, y: 0, duration: 1, stagger: 0.1
+            });
+        });
+    </script>
+</body>
+</html>
